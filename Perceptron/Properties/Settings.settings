@@ -1,0 +1,11 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Perceptron.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="popup" Type="System.String" Scope="User">
+      <Value Profile="(Default)">&lt;Popup Height="75" Width="200"&gt;
+            &lt;Button Height="30" Width="75" Content="step"&gt;&lt;/Button&gt;
+        &lt;/Popup&gt; </Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

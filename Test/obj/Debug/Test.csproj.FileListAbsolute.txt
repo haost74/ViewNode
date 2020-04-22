@@ -1,0 +1,8 @@
+D:\Tensor\Perceptron\Perceptron\Test\obj\Debug\Test.csproj.CoreCompileInputs.cache
+D:\Tensor\Perceptron\Perceptron\Test\bin\Debug\Test.exe.config
+D:\Tensor\Perceptron\Perceptron\Test\bin\Debug\Test.exe
+D:\Tensor\Perceptron\Perceptron\Test\bin\Debug\Test.pdb
+D:\Tensor\Perceptron\Perceptron\Test\obj\Debug\Test.exe
+D:\Tensor\Perceptron\Perceptron\Test\obj\Debug\Test.pdb
+D:\Tensor\Perceptron\Perceptron\Test\bin\Debug\test.txt
+D:\Tensor\Perceptron\Perceptron\Test\obj\Debug\Test.csprojAssemblyReference.cache
