@@ -1,4 +1,5 @@
-﻿using Perceptron.ModelView;
+﻿using Perceptron.Model;
+using Perceptron.ModelView;
 using Perceptron.Utility;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,7 @@ namespace Perceptron
             {
                 var p = new PerceptronLib.Perceptron(10, 10);
             });
+            
         }
 
         private async Task Init()
@@ -51,8 +53,8 @@ namespace Perceptron
         {
             mainCanvas.Children.Clear();
 
-            PerceptronLib.Utility.Matrix<PerceptronLib.Nodes.Node> matrixs = 
-                new PerceptronLib.Utility.Matrix<PerceptronLib.Nodes.Node>(GetDataContext.Row, GetDataContext.Column);
+            PerceptronLib.Utility.Matrix<PerceptronLib.Nodes.ViewNode> matrixs = 
+                new PerceptronLib.Utility.Matrix<PerceptronLib.Nodes.ViewNode>(GetDataContext.Row, GetDataContext.Column);
 
             double height = mainCanvas.ActualHeight;
             double wigth = mainCanvas.ActualWidth;
@@ -91,8 +93,6 @@ namespace Perceptron
                     {
                         try
                         {
-
-
                             GenerateCircle circle = new GenerateCircle(x <= y ? x : y);
                             //var el = circle.GetEllipse(numRow, numColumn++);
                             var el = circle.GetEllipse($"X = {x * j} Y = {y * i}");

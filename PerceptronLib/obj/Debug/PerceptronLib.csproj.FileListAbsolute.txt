@@ -7,3 +7,12 @@ D:\Tensor\Perceptron\Perceptron\PerceptronLib\bin\Debug\PerceptronLib.dll.config
 D:\Tensor\Perceptron\Perceptron\PerceptronLib\obj\Debug\PerceptronLib.Properties.Resources.resources
 D:\Tensor\Perceptron\Perceptron\PerceptronLib\obj\Debug\PerceptronLib.csproj.GenerateResource.cache
 D:\Tensor\Perceptron\Perceptron\PerceptronLib\obj\Debug\PerceptronLib.csprojAssemblyReference.cache
+D:\Tensor\ViewNode\PerceptronLib\bin\Debug\PerceptronLib.dll.config
+D:\Tensor\ViewNode\PerceptronLib\bin\Debug\PerceptronLib.dll
+D:\Tensor\ViewNode\PerceptronLib\bin\Debug\PerceptronLib.pdb
+D:\Tensor\ViewNode\PerceptronLib\obj\Debug\PerceptronLib.csprojAssemblyReference.cache
+D:\Tensor\ViewNode\PerceptronLib\obj\Debug\PerceptronLib.Properties.Resources.resources
+D:\Tensor\ViewNode\PerceptronLib\obj\Debug\PerceptronLib.csproj.GenerateResource.cache
+D:\Tensor\ViewNode\PerceptronLib\obj\Debug\PerceptronLib.csproj.CoreCompileInputs.cache
+D:\Tensor\ViewNode\PerceptronLib\obj\Debug\PerceptronLib.dll
+D:\Tensor\ViewNode\PerceptronLib\obj\Debug\PerceptronLib.pdb
