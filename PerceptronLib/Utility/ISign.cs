@@ -8,6 +8,8 @@ namespace PerceptronLib.Utility
 {
     public interface ISign
     {
+        int Row { get; set; }
+        int Column { get; set; }
         double Value { get; set; }
         double Weight { get; set; }
 

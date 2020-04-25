@@ -7,6 +7,9 @@ namespace PerceptronLib.Nodes
 {
     public class Node : ISign
     {
+
+        public int Row { get; set; } = 0;
+        public int Column { get; set; } = 0;
         public double Value { get; set; } = 0;
 
         public double Weight { get; set; } = 0;

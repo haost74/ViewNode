@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace Perceptron.Model
 {
@@ -18,11 +16,73 @@ namespace Perceptron.Model
         /// </summary>
         private double height = 0;
 
-        public Init(int row, int column, double height, double width)
+        //на сколько частей разбита активная часть Canvas по горизонтали
+        private int allStepWigth = 0;
+        //на сколько частей разбита активная часть Canvas по вертикали
+        private int allStepHeight = 0;
+
+        private double actionFieldW = 0;
+        private double actionFieldH = 0;
+
+        private double radius = 0;
+        Canvas mainCanvas = null;
+
+        /// <summary>
+        /// создание матрицы 
+        /// </summary>
+        /// <param name="row">количество введеных пользователем строк</param>
+        /// <param name="column">количество введеных пользователем столбцов</param>
+        /// <param name="height">размер по высоте Canvas</param>
+        /// <param name="width">размер по ширине Canvas</param>
+        public Init(int row, int column, double height, double width, Canvas canvas)
         {
+            canvas.Children.Clear();
+            mainCanvas = canvas;
             this.height = height;
             this.width = width;
+            allStepWigth = Algo((_x) => { return 2 * _x + 1; }, column);
+            allStepHeight = Algo((_x) => { return 2 * _x + 1; }, row);
+            actionFieldW = Algo(_x => { return Math.Round((_x - 300) / allStepWigth); }, width);
+            actionFieldH = Algo(_x => { return Math.Round((_x - 300) / allStepWigth); }, height);
+
+            radius = actionFieldW < actionFieldH ? actionFieldW : actionFieldH;
             matrixs = new PerceptronLib.Utility.Matrix<PerceptronLib.Nodes.ViewNode>(row, column);
+
+            double stepRow = 0;
+            double stepColumn = 0;
+            int x = -1, y = -1;
+            for (int i = 0; i < allStepWigth; ++i)
+            {
+                stepRow += radius;
+                stepColumn = 0;
+                if(i%2 != 0 && i < row)
+                {
+                    
+                    for(int j = 0; j < allStepHeight; ++j)
+                    {
+                        stepColumn += radius;
+                        if(j%2 != 0 && j < column)
+                        {                            
+                            var node = new PerceptronLib.Nodes.ViewNode();
+                            node.Row = ++x;
+                            node.Column = ++y;
+
+                            var el = node.GetEllipse($"X = {x} Y = {y}", radius);
+                            AddCanvas(el, stepRow, stepColumn);
+                            matrixs[x, y] = node;
+                        }
+                    }
+                }
+            }
+        }
+
+
+        private void AddCanvas(UIElement el, double x, double y)
+        {
+            if (mainCanvas == null) return;
+            el.SetValue(Canvas.LeftProperty, x);
+            el.SetValue(Canvas.TopProperty, y);
+            mainCanvas.Children.Add(el);
         }
 
         /// <summary>
@@ -33,7 +93,19 @@ namespace Perceptron.Model
         /// <returns></returns>
         private (double w, double h) CountallStep()
         {
-            return  ( 10, 5);
+            return (10, 5);
         }
+
+        /// <summary>
+        ///на сколько частей всего
+        /// поделен Canvas
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns></returns>
+        private int AllStep(int n) => 2 * n + 1;
+
+        private T Algo<T>(Func<T, T> func, T x) => func(x);
+
+        private (int, string) GetR(double x, double y) => (10, "");
     }
 }

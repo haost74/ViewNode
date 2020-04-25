@@ -53,8 +53,6 @@ namespace Perceptron
         {
             mainCanvas.Children.Clear();
 
-            PerceptronLib.Utility.Matrix<PerceptronLib.Nodes.ViewNode> matrixs = 
-                new PerceptronLib.Utility.Matrix<PerceptronLib.Nodes.ViewNode>(GetDataContext.Row, GetDataContext.Column);
 
             double height = mainCanvas.ActualHeight;
             double wigth = mainCanvas.ActualWidth;
@@ -62,12 +60,8 @@ namespace Perceptron
             PerceptronLib.Perceptron perceptron = null;
             int row = GetDataContext.Row;
             int column = GetDataContext.Column;
-            await Task.Run(() =>
-            {
-                perceptron = new PerceptronLib.Perceptron(row, column);
-            });
-            if (perceptron == null) return;
-
+            Init init = new Init(row, column, height, wigth, mainCanvas);
+            return;
             MapLine ml = new MapLine();
 
             var _x = 2 * GetDataContext.Column + 1;
