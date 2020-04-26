@@ -14,10 +14,10 @@
         <StackPanel Grid.Row="0" Orientation="Horizontal">
             <Label Content="Row"/>
             <TextBox Height="20" Width="60" VerticalContentAlignment="Center"
-                     HorizontalContentAlignment="Left" Padding="5 0 0 0" Text="{Binding Row, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                     HorizontalContentAlignment="Left" Padding="5 0 0 0" Text="{Binding Column, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
             <Label Content="Column"/>
             <TextBox Height="20" Width="60" VerticalContentAlignment="Center"
-                     HorizontalContentAlignment="Left" Padding="5 0 0 0" Text="{Binding Column, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                     HorizontalContentAlignment="Left" Padding="5 0 0 0" Text="{Binding Row, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
             <Button Content="Refresh" Height="20" Width="76" Margin="20 0 0 0" Click="Button_Click"/>
         </StackPanel>
         <Canvas Grid.Row="1" Margin="10" x:Name="mainCanvas" Background="#FFFDE7" PreviewMouseLeftButtonDown="mainCanvas_MouseLeftButtonDown">

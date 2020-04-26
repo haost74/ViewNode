@@ -46,34 +46,44 @@ namespace Perceptron.Model
             actionFieldH = Algo(_x => { return Math.Round((_x - 300) / allStepWigth); }, height);
 
             radius = actionFieldW < actionFieldH ? actionFieldW : actionFieldH;
-            matrixs = new PerceptronLib.Utility.Matrix<PerceptronLib.Nodes.ViewNode>(row, column);
+            matrixs = new PerceptronLib.Utility.Matrix<PerceptronLib.Nodes.ViewNode>(column, row);
 
-            double stepRow = 0;
-            double stepColumn = 0;
-            int x = -1, y = -1;
-            for (int i = 0; i < allStepWigth; ++i)
+            for(int i = 0; i < matrixs.Column; ++i)
             {
-                stepRow += radius;
-                stepColumn = 0;
-                if(i%2 != 0 && i < row)
+                for(int j = 0; j < matrixs.Row; ++j)
                 {
+                    var node = new PerceptronLib.Nodes.ViewNode();
+                    node.Row = i + 1;
+                    node.Column = j + 1;
+                    var el = node.GetEllipse($"X = {node.Column} Y = {node.Row}", radius);
                     
-                    for(int j = 0; j < allStepHeight; ++j)
-                    {
-                        stepColumn += radius;
-                        if(j%2 != 0 && j < column)
-                        {                            
-                            var node = new PerceptronLib.Nodes.ViewNode();
-                            node.Row = ++x;
-                            node.Column = ++y;
-
-                            var el = node.GetEllipse($"X = {x} Y = {y}", radius);
-                            AddCanvas(el, stepRow, stepColumn);
-                            matrixs[x, y] = node;
-                        }
-                    }
+                    AddCanvas(el, i*radius + radius + (i*radius), j*radius + radius + (j*radius));
+                    matrixs[j, i] = node;
                 }
             }
+
+            //for (int i = 0; i < allStepWigth; ++i)
+            //{
+            //    stepRow += radius;
+            //    stepColumn = 0;
+            //    if(i%2 != 0 && i < row)
+            //    {
+            //        for(int j = 0; j < allStepHeight; ++j)
+            //        {
+            //            stepColumn += radius;
+            //            if(j%2 != 0 && j < column)
+            //            {                            
+            //                var node = new PerceptronLib.Nodes.ViewNode();
+            //                node.Row = ++x;
+            //                node.Column = ++y;
+
+            //                var el = node.GetEllipse($"X = {x} Y = {y}", radius);
+            //                AddCanvas(el, stepRow, stepColumn);
+            //                matrixs[x, y] = node;
+            //            }
+            //        }
+            //    }
+            //}
         }
 
 
