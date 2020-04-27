@@ -1,0 +1,53 @@
+01.01.0001 0:00:00 | NAudio.MmException: BadDeviceId calling waveInOpen
+   в NAudio.Wave.WaveIn.OpenWaveInDevice()
+   в NAudio.Wave.WaveIn.StartRecording()
+   в Audio.MainAudio.StartRec() в D:\Tensor\ViewNode\Audio\MainAudio.cs:строка 44
+01.01.0001 0:00:00 | NAudio.MmException: BadDeviceId calling waveInOpen
+   в NAudio.Wave.WaveIn.OpenWaveInDevice()
+   в NAudio.Wave.WaveIn.StartRecording()
+   в Audio.MainAudio.StartRec() в D:\Tensor\ViewNode\Audio\MainAudio.cs:строка 49
+27.04.2020 14:23:11 | NAudio.MmException: BadDeviceId calling waveInOpen
+   в NAudio.Wave.WaveIn.OpenWaveInDevice()
+   в NAudio.Wave.WaveIn.StartRecording()
+   в Audio.MainAudio.StartRec() в D:\Tensor\ViewNode\Audio\MainAudio.cs:строка 49
+
+27.04.2020 14:38:55 | NAudio.MmException: BadDeviceId calling waveInOpen
+   в NAudio.Wave.WaveIn.OpenWaveInDevice()
+   в NAudio.Wave.WaveIn.StartRecording()
+   в Audio.MainAudio.StartRec() в D:\Tensor\ViewNode\Audio\MainAudio.cs:строка 49
+
+27.04.2020 14:50:47 | NAudio.MmException: BadDeviceId calling waveInOpen
+   в NAudio.Wave.WaveIn.OpenWaveInDevice()
+   в NAudio.Wave.WaveIn.StartRecording()
+   в Audio.MainAudio.StartRec() в D:\Tensor\ViewNode\Audio\MainAudio.cs:строка 49
+
+27.04.2020 14:54:46 | NAudio.MmException: BadDeviceId calling waveInOpen
+   в NAudio.Wave.WaveIn.OpenWaveInDevice()
+   в NAudio.Wave.WaveIn.StartRecording()
+   в Audio.MainAudio.StartRec() в D:\Tensor\ViewNode\Audio\MainAudio.cs:строка 49
+
+27.04.2020 14:56:03 | NAudio.MmException: BadDeviceId calling waveInOpen
+   в NAudio.Wave.WaveIn.OpenWaveInDevice()
+   в NAudio.Wave.WaveIn.StartRecording()
+   в Audio.MainAudio.StartRec() в D:\Tensor\ViewNode\Audio\MainAudio.cs:строка 49
+
+27.04.2020 14:57:03 | NAudio.MmException: BadDeviceId calling waveInOpen
+   в NAudio.Wave.WaveIn.OpenWaveInDevice()
+   в NAudio.Wave.WaveIn.StartRecording()
+   в Audio.MainAudio.StartRec() в D:\Tensor\ViewNode\Audio\MainAudio.cs:строка 49
+
+27.04.2020 15:01:22 | NAudio.MmException: BadDeviceId calling waveInOpen
+   в NAudio.Wave.WaveIn.OpenWaveInDevice()
+   в NAudio.Wave.WaveIn.StartRecording()
+   в Audio.MainAudio.StartRec() в D:\Tensor\ViewNode\Audio\MainAudio.cs:строка 49
+
+27.04.2020 15:03:36 | NAudio.MmException: BadDeviceId calling waveInOpen
+   в NAudio.Wave.WaveIn.OpenWaveInDevice()
+   в NAudio.Wave.WaveIn.StartRecording()
+   в Audio.MainAudio.StartRec() в D:\Tensor\ViewNode\Audio\MainAudio.cs:строка 49
+
+27.04.2020 15:29:18 | NAudio.MmException: BadDeviceId calling waveInOpen
+   в NAudio.Wave.WaveIn.OpenWaveInDevice()
+   в NAudio.Wave.WaveIn.StartRecording()
+   в Audio.MainAudio.StartRec() в D:\Tensor\ViewNode\Audio\MainAudio.cs:строка 49
+

@@ -40,3 +40,7 @@ D:\Tensor\ViewNode\Perceptron\obj\Debug\Perceptron.csproj.CoreCompileInputs.cach
 D:\Tensor\ViewNode\Perceptron\obj\Debug\Perceptron.csproj.CopyComplete
 D:\Tensor\ViewNode\Perceptron\obj\Debug\Perceptron.exe
 D:\Tensor\ViewNode\Perceptron\obj\Debug\Perceptron.pdb
+D:\Tensor\ViewNode\Perceptron\bin\Debug\Audio.dll
+D:\Tensor\ViewNode\Perceptron\bin\Debug\NAudio.dll
+D:\Tensor\ViewNode\Perceptron\bin\Debug\Audio.pdb
+D:\Tensor\ViewNode\Perceptron\bin\Debug\NAudio.xml

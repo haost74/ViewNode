@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace Perceptron.Model
 {
@@ -25,7 +26,8 @@ namespace Perceptron.Model
         private double actionFieldH = 0;
 
         private double radius = 0;
-        Canvas mainCanvas = null;
+        private Canvas mainCanvas = null;
+        private delegate void DisplayHandler();
 
         /// <summary>
         /// создание матрицы 
@@ -37,61 +39,73 @@ namespace Perceptron.Model
         public Init(int row, int column, double height, double width, Canvas canvas)
         {
             canvas.Children.Clear();
+            DisplayHandler dh = new DisplayHandler(callback);
             mainCanvas = canvas;
             this.height = height;
             this.width = width;
-            allStepWigth = Algo((_x) => { return 2 * _x + 1; }, column);
-            allStepHeight = Algo((_x) => { return 2 * _x + 1; }, row);
-            actionFieldW = Algo(_x => { return Math.Round((_x - 300) / allStepWigth); }, width);
-            actionFieldH = Algo(_x => { return Math.Round((_x - 300) / allStepWigth); }, height);
+            allStepWigth = Algo((_x) => { return 2 * _x + 1; }, row);
+            allStepHeight = Algo((_x) => { return 2 * _x + 1; }, column);
+            actionFieldW = Algo(_x => { return Math.Round((_x - 300) / allStepWigth); }, height);
+            actionFieldH = Algo(_x => { return Math.Round((_x - 300) / allStepHeight); }, width);
 
             radius = actionFieldW < actionFieldH ? actionFieldW : actionFieldH;
-            matrixs = new PerceptronLib.Utility.Matrix<PerceptronLib.Nodes.ViewNode>(column, row);
+            matrixs = new PerceptronLib.Utility.Matrix<PerceptronLib.Nodes.ViewNode>(row, column);
+            BrushConverter bc = new BrushConverter();
 
-            for(int i = 0; i < matrixs.Column; ++i)
+            for (int i = 0; i < matrixs.Row; ++i)
             {
-                for(int j = 0; j < matrixs.Row; ++j)
+                for (int j = 0; j < matrixs.Column; ++j)
                 {
                     var node = new PerceptronLib.Nodes.ViewNode();
                     node.Row = i + 1;
                     node.Column = j + 1;
+                    node.Fill = (Brush)bc.ConvertFrom("#E5E7E9");
                     var el = node.GetEllipse($"X = {node.Column} Y = {node.Row}", radius);
                     
-                    AddCanvas(el, i*radius + radius + (i*radius), j*radius + radius + (j*radius));
-                    matrixs[j, i] = node;
+                    AddCanvas(el, i * radius + radius + (i * radius), j * radius + radius + (j * radius));
+                    matrixs[i, j] = node;
                 }
             }
 
-            //for (int i = 0; i < allStepWigth; ++i)
-            //{
-            //    stepRow += radius;
-            //    stepColumn = 0;
-            //    if(i%2 != 0 && i < row)
-            //    {
-            //        for(int j = 0; j < allStepHeight; ++j)
-            //        {
-            //            stepColumn += radius;
-            //            if(j%2 != 0 && j < column)
-            //            {                            
-            //                var node = new PerceptronLib.Nodes.ViewNode();
-            //                node.Row = ++x;
-            //                node.Column = ++y;
-
-            //                var el = node.GetEllipse($"X = {x} Y = {y}", radius);
-            //                AddCanvas(el, stepRow, stepColumn);
-            //                matrixs[x, y] = node;
-            //            }
-            //        }
-            //    }
-            //}
+            dh.BeginInvoke(null, null);
         }
 
+        private void callback()
+        {
+            for (int i = 0; i < matrixs.Column; ++i)
+            {
+                if (i <= matrixs.Row - 2)
+                    for (int j = 0; j < matrixs.Column; ++j)
+                    {
+                        var ovner = matrixs[i, j];
+                        var node = matrixs[i + 1, j];
+                    }
+            }
+        }
+
+
+        //private void AddLine()
+        //{
+        //    //for (int i = 0; i < matrixs.Row; ++i)
+        //    //{
+        //    //    for (int j = 0; j < matrixs.Column; ++j)
+        //    //    { 
+
+        //    //    }
+        //    //}
+
+        //    for (int j = 0; j < matrixs.Column; ++j)
+        //    {
+
+        //    }
+
+        //}
 
         private void AddCanvas(UIElement el, double x, double y)
         {
             if (mainCanvas == null) return;
-            el.SetValue(Canvas.LeftProperty, x);
-            el.SetValue(Canvas.TopProperty, y);
+            el.SetValue(Canvas.LeftProperty, y);
+            el.SetValue(Canvas.TopProperty, x);
             mainCanvas.Children.Add(el);
         }
 

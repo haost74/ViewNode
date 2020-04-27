@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows.Shapes;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
@@ -28,11 +26,11 @@ namespace PerceptronLib.Nodes
         private double radius = double.NaN;
         public Brush Stroke = Brushes.Black;
         public double StrokeThickness = 0.5;
-        Brush Fill = Brushes.Transparent;
+        public Brush Fill = Brushes.Transparent;
         private BrushConverter bc = new BrushConverter();
         private Popup codePopup = null;
         public Action<UIElement> Action;
-
+        public Ellipse Ellipse = null;
         public Ellipse GetEllipse(string str, double radius)
         {
             var res = new Ellipse
@@ -79,7 +77,7 @@ namespace PerceptronLib.Nodes
 
             codePopup.Placement = PlacementMode.MousePoint;
             codePopup.PlacementTarget = res;
-
+            Ellipse = res;
             return res;
         }
 

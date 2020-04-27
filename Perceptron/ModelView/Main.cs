@@ -16,6 +16,7 @@ namespace Perceptron.ModelView
             get { return row; }
             set
             {
+                MainWindow.main.mainCanvas_MouseLeftButtonDown(null, null);
                 row = value;
                 OnPropertyChanged();
             }
@@ -27,6 +28,7 @@ namespace Perceptron.ModelView
             get { return column; }
             set
             {
+                MainWindow.main.mainCanvas_MouseLeftButtonDown(null, null);
                 column = value;
                 OnPropertyChanged();
             }

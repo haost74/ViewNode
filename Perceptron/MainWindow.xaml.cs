@@ -1,12 +1,17 @@
-﻿using Perceptron.Model;
+﻿using Audio;
+using Perceptron.Model;
 using Perceptron.ModelView;
 using Perceptron.Utility;
+using PerceptronLib.Nodes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
@@ -17,22 +22,33 @@ namespace Perceptron
     /// </summary>
     public partial class MainWindow : Window
     {
+        MainAudio ma = null;//new MainAudio();
+        public static MainWindow main = null;
         public MainWindow()
         {
+            main = this;
             InitializeComponent();
             DataContext = new Main();
-            //Loaded += MainWindow_Loaded;
+            Loaded += MainWindow_Loaded;
+            Closed += MainWindow_Closed;
 
+        }
+
+        private void MainWindow_Closed(object sender, EventArgs e)
+        {
+            if (ma != null)
+                ma.StopRec();
         }
 
         int[,] input = new int[,] { { 1, 0 }, { 1, 1 }, { 0, 1 }, { 0, 0 } };
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            Task.Run(() =>
+            if (ma != null)
             {
-                var p = new PerceptronLib.Perceptron(10, 10);
-            });
-            
+                ma.outputFilename = "test.wav";
+                ma.StartRec();
+            }
+
         }
 
         private async Task Init()
@@ -49,10 +65,10 @@ namespace Perceptron
             get { return (Main)DataContext; }
         }
 
-        private async void Button_Click(object sender, RoutedEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
             mainCanvas.Children.Clear();
-
+            mainCanvas_MouseLeftButtonDown(null, null);
 
             double height = mainCanvas.ActualHeight;
             double wigth = mainCanvas.ActualWidth;
@@ -90,7 +106,7 @@ namespace Perceptron
                             GenerateCircle circle = new GenerateCircle(x <= y ? x : y);
                             //var el = circle.GetEllipse(numRow, numColumn++);
                             var el = circle.GetEllipse($"X = {x * j} Y = {y * i}");
-                            
+
                             circle.Action += Checed;
                             el.SetValue(Canvas.LeftProperty, x * j);
                             el.SetValue(Canvas.TopProperty, y * i);
@@ -116,13 +132,13 @@ namespace Perceptron
             var temp = maps.GroupBy((z) => z.Item1).ToList();
 
             List<Tuple<double, double>> res = null;
-            foreach(var group in temp)
+            foreach (var group in temp)
             {
-                if(res != null)
+                if (res != null)
                 {
                     var temps = group.ToList();
-                    foreach(var root in temps)
-                        foreach(var dop in res)
+                    foreach (var root in temps)
+                        foreach (var dop in res)
                         {
                             GenerateLine gl = new GenerateLine();
                             gl.newLine(root.Item1, root.Item2, dop.Item1, dop.Item2, Brushes.Black, mainCanvas);
@@ -138,13 +154,49 @@ namespace Perceptron
             var ellipse = (Ellipse)el;
 
         }
-        private void mainCanvas_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        public void mainCanvas_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-
-            if (GenerateCircle.sPopup != null)
+            if (ViewNode.sPopup != null)
             {
-                GenerateCircle.sPopup.IsOpen = false;
+                ViewNode.sPopup.IsOpen = false;
             }
         }
+    }
+
+    public static class PopupCloser
+    {
+        public static void CloseAllPopups()
+        {
+            foreach (Window window in Application.Current.Windows)
+            {
+                CloseAllPopups(window);
+            }
+        }
+
+        public static void CloseAllPopups(Window window)
+        {
+            IntPtr handle = new WindowInteropHelper(window).Handle;
+            EnumChildWindows(handle, ClosePopup, IntPtr.Zero);
+        }
+
+        private static bool ClosePopup(IntPtr hwnd, IntPtr lParam)
+        {
+            HwndSource source = HwndSource.FromHwnd(hwnd);
+            if (source != null)
+            {
+                Popup popup = source.RootVisual as Popup;
+                if (popup != null)
+                {
+                    popup.IsOpen = false;
+                }
+            }
+            return true; // to continue enumeration
+        }
+
+        private delegate bool EnumWindowsProc(IntPtr hwnd, IntPtr lParam);
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool EnumChildWindows(IntPtr hwndParent, EnumWindowsProc lpEnumFunc, IntPtr lParam);
     }
 }

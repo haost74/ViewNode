@@ -1,0 +1,9 @@
+D:\Tensor\ViewNode\Audio\bin\Debug\Audio.dll
+D:\Tensor\ViewNode\Audio\bin\Debug\Audio.pdb
+D:\Tensor\ViewNode\Audio\bin\Debug\NAudio.dll
+D:\Tensor\ViewNode\Audio\bin\Debug\NAudio.xml
+D:\Tensor\ViewNode\Audio\obj\Debug\Audio.csprojAssemblyReference.cache
+D:\Tensor\ViewNode\Audio\obj\Debug\Audio.csproj.CoreCompileInputs.cache
+D:\Tensor\ViewNode\Audio\obj\Debug\Audio.csproj.CopyComplete
+D:\Tensor\ViewNode\Audio\obj\Debug\Audio.dll
+D:\Tensor\ViewNode\Audio\obj\Debug\Audio.pdb
