@@ -36,7 +36,7 @@ namespace PerceptronLib.Nodes
 
          Action<double, double> ISign.SignalTransmission { get; set; }
 
-        public void Signal(double value, double weight)
+        public virtual void Signal(double value, double weight)
         {
 
         }

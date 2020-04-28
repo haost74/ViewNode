@@ -30,6 +30,7 @@ namespace PerceptronLib.Utility
             }
         }
 
+
         public static Matrix<T> CreateIdentityMatrix(int row, int column)
         {
             var result = new Matrix<T>(row, column);

@@ -12,6 +12,10 @@ namespace PerceptronLib.Nodes
 {
     public class ViewNode : Node
     {
+        public static List<Tuple<double, double>> Coordinates =
+            new List<Tuple<double, double>>();
+        public double XMap = 0;
+        public double YMap = 0;
         private List<Line> lines = new List<Line>();
         public List<Line> List
         {
@@ -100,8 +104,9 @@ namespace PerceptronLib.Nodes
 
         }
 
-        public Line newLine(double x1, double y1, double x2, double y2, Brush brush, Canvas can)
+        public static Line newLine(double x1, double y1, double x2, double y2, Brush brush, Canvas can)
         {
+            
             Line line = new Line();
 
             line.X1 = x1;
@@ -124,6 +129,12 @@ namespace PerceptronLib.Nodes
             can.Children.Add(line);
 
             return line;
+        }
+
+
+        public override void Signal(double value, double weight)
+        {
+            //base.Signal(value, weight);
         }
 
     }
