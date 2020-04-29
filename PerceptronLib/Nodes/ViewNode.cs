@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -47,6 +48,10 @@ namespace PerceptronLib.Nodes
             };
 
 
+            //res.GotFocus += Res_GotFocus;
+            //res.LostFocus += Res_GotFocus;
+            res.MouseEnter += Res_GotFocus;
+            res.MouseLeave += Res_GotFocus;
             res.Cursor = Cursors.Hand;
             res.MouseLeftButtonDown += Res_MouseLeftButtonDown;
             codePopup = new Popup();
@@ -84,6 +89,30 @@ namespace PerceptronLib.Nodes
             Ellipse = res;
             return res;
         }
+
+        bool isFocuse = false;
+        private void Res_GotFocus(object sender, RoutedEventArgs e)
+        {
+            var ellipse = (Ellipse)sender;
+            isFocuse = !isFocuse;
+            if(isFocuse)
+            {
+                ellipse.Fill = (Brush)bc.ConvertFrom("#ABEBC6");
+            }
+            else
+            {
+                ellipse.Fill = (Brush)bc.ConvertFrom("#E5E7E9");
+            }
+
+            ActionLine?.BeginInvoke(isFocuse, ellipse, callBack, ellipse);
+        }
+
+        private void callBack(IAsyncResult ar)
+        {
+            
+        }
+
+        public Action<bool, Ellipse> ActionLine;
 
         private void Cb_Checked(object sender, RoutedEventArgs e)
         {

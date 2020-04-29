@@ -1,12 +1,14 @@
 ﻿using PerceptronLib.Nodes;
 using PerceptronLib.Utility;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Shapes;
 
 namespace Perceptron.Model
 {
@@ -43,7 +45,20 @@ namespace Perceptron.Model
         /// <param name="width">размер по ширине Canvas</param>
         public Init(int row, int column, double height, double width, Canvas canvas)
         {
-            canvas.Children.Clear();
+            //canvas.Children.Clear();
+            ClearAsync(canvas)
+                .ContinueWith(_ =>
+                {
+                    Thread.Sleep(200);
+                    MainWindow.main.Dispatcher.BeginInvoke((ThreadStart)delegate ()
+                    {
+                        Drav(row, column, height, width, canvas);
+                    });
+                });
+        }
+
+        private void Drav(int row, int column, double height, double width, Canvas canvas)
+        {
             DisplayHandler dh = new DisplayHandler(callback);
             ViewNode.Coordinates.Clear();
             mainCanvas = canvas;
@@ -56,7 +71,7 @@ namespace Perceptron.Model
 
             radius = actionFieldW < actionFieldH ? actionFieldW : actionFieldH;
             //matrixs = new PerceptronLib.Utility.Matrix<PerceptronLib.Nodes.ViewNode>(row, column);
-            matrixs = Matrix<PerceptronLib.Nodes.ViewNode>.CreateIdentityMatrix(row, column); ;
+            matrixs = Matrix<PerceptronLib.Nodes.ViewNode>.CreateIdentityMatrix(row, column);
             BrushConverter bc = new BrushConverter();
             for (int i = 0; i < matrixs.Row; ++i)
             {
@@ -67,6 +82,7 @@ namespace Perceptron.Model
                     node.Column = j + 1;
                     node.Fill = (Brush)bc.ConvertFrom("#E5E7E9");
                     var el = node.GetEllipse($"X = {node.Column} Y = {node.Row}", radius);
+                    node.ActionLine += ActionLine;
                     //var el = node.GetEllipse($"X = {i * radius + radius + (i * radius)} Y = {j * radius + radius + (j * radius)}", radius);
                     node.XMap = i * radius + radius + (i * radius);
                     node.YMap = j * radius + radius + (j * radius);
@@ -74,33 +90,36 @@ namespace Perceptron.Model
                     AddCanvas(el, node.XMap, node.YMap);
                     matrixs[i, j] = node;
 
-                    //if (i > 0)
-                    //{
-                    //    //var old = ViewNode.Coordinates.Where(x => x.Item2 == ViewNode.Coordinates[i].Item2 - radius * 2).ToList();
-                    //    List<ViewNode> temp = new List<ViewNode>();
-                    //    matrixs.ProcessFunctionOverData((n, m) =>
-                    //    {
-                    //        var mp = node.YMap - radius * 2;
-                    //        if (n == i - 1)
-                    //        {
-                    //            temp.Add(matrixs[n, m]);
-                    //        }
-                    //    });
-
-
-                    //    foreach (var nd in temp)
-                    //    {
-                    //        ViewNode.newLine(node.YMap + radius / 2, node.XMap + radius / 2, nd.YMap + radius / 2, nd.XMap + radius / 2, Brushes.Black, mainCanvas);
-                    //    }
-                    //}
                 }
             }
 
             dh.BeginInvoke(null, null);
         }
 
-
-
+        private BrushConverter bc = new BrushConverter();
+        private void ActionLine(bool arg1, Ellipse arg2)
+        {
+            //el.SetValue(Canvas.LeftProperty, y);
+            //el.SetValue(Canvas.TopProperty, x);
+            //mainCanvas.GetValue(arg2);
+            MainWindow.main.Dispatcher.BeginInvoke((ThreadStart)delegate ()
+            {
+                var x = (double)arg2.GetValue(Canvas.LeftProperty);
+                var y = (double)arg2.GetValue(Canvas.TopProperty);
+                List<Line> resLine;
+                if(dicLines.TryGetValue(new Tuple<double, double>(y, x), out resLine))
+                {
+                    for(int i = 0; i < resLine.Count; ++i)
+                    {
+                        resLine[i].Stroke = arg1 ? (Brush)bc.ConvertFrom("#FF0033") : Brushes.Black;
+                        resLine[i].StrokeThickness = arg1 ? 3 : 1;
+                    }
+                }
+            });
+        }
+        //List<Line> allLines = new List<Line>();
+        Dictionary<Tuple<double, double>, List<Line>> dicLines =
+            new Dictionary<Tuple<double, double>, List<Line>>();
         private void callback()
         {
             Task.Run(() =>
@@ -114,7 +133,17 @@ namespace Perceptron.Model
                     {
                         MainWindow.main.Dispatcher.BeginInvoke((ThreadStart)delegate ()
                         {
-                            ViewNode.newLine(temp.Item2 + radius / 2, temp.Item1 + radius / 2, el.Item2 + radius / 2, el.Item1 + radius / 2, Brushes.Black, mainCanvas);
+                            var line = ViewNode.newLine(temp.Item2 + radius / 2, temp.Item1 + radius / 2, el.Item2 + radius / 2, el.Item1 + radius / 2, Brushes.Black, mainCanvas);
+                            var resList = new List<Line>();
+                            if (dicLines.TryGetValue(temp, out resList))
+                            {
+                                resList.Add(line);
+                            }else
+                            {
+                                resList = new List<Line>();
+                                resList.Add(line);
+                                dicLines.Add(temp, resList);
+                            }
                         });
                     }
 
@@ -124,21 +153,18 @@ namespace Perceptron.Model
         }
 
 
-        private ViewNode GetNode(double x, double y)
+
+        private async Task ClearAsync(Canvas canvas)
         {
-            ViewNode res = null;
-            if (matrixs != null)
-                for (int i = 0; i < matrixs.Row; ++i)
-                    for (int j = 0; j < matrixs.Column; ++j)
-                    {
-                        if (matrixs[i, j].XMap == x && matrixs[i, j].YMap == y)
-                        {
-                            res = matrixs[i, j];
-                            return res;
-                        }
-                    }
-            return res;
+            await Task.Run(() =>
+            {
+                MainWindow.main.Dispatcher.BeginInvoke((ThreadStart)delegate ()
+                {
+                    canvas.Children.Clear();
+                });
+            });
         }
+
 
         private void AddCanvas(UIElement el, double x, double y)
         {
