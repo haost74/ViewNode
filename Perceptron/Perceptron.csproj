@@ -63,6 +63,8 @@
     </Compile>
     <Compile Include="ModelView\Main.cs" />
     <Compile Include="Model\Init.cs" />
+    <Compile Include="Utility\Colors.cs" />
+    <Compile Include="Utility\Config.cs" />
     <Compile Include="Utility\ConvertToCode.cs" />
     <Compile Include="Utility\GenerateCircle.cs" />
     <Compile Include="Utility\GenerateLine.cs" />

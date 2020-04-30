@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
@@ -80,9 +81,10 @@ namespace Perceptron.Model
                     var node = new PerceptronLib.Nodes.ViewNode();
                     node.Row = i + 1;
                     node.Column = j + 1;
-                    node.Fill = (Brush)bc.ConvertFrom("#E5E7E9");
+                    node.Fill = Config.Cfg.Colors.ColorEllipse;//(Brush)bc.ConvertFrom("#E5E7E9");
                     var el = node.GetEllipse($"X = {node.Column} Y = {node.Row}", radius);
                     node.ActionLine += ActionLine;
+                    node.Action += ActionCheckBox;
                     //var el = node.GetEllipse($"X = {i * radius + radius + (i * radius)} Y = {j * radius + radius + (j * radius)}", radius);
                     node.XMap = i * radius + radius + (i * radius);
                     node.YMap = j * radius + radius + (j * radius);
@@ -90,32 +92,99 @@ namespace Perceptron.Model
                     AddCanvas(el, node.XMap, node.YMap);
                     matrixs[i, j] = node;
 
+
+
                 }
             }
 
             dh.BeginInvoke(null, null);
         }
 
-        private BrushConverter bc = new BrushConverter();
-        private void ActionLine(bool arg1, Ellipse arg2)
+
+        private void ActionCheckBox(UIElement obj, UIElement obj1)
         {
-            //el.SetValue(Canvas.LeftProperty, y);
-            //el.SetValue(Canvas.TopProperty, x);
-            //mainCanvas.GetValue(arg2);
-            MainWindow.main.Dispatcher.BeginInvoke((ThreadStart)delegate ()
+            List<Line> resLine = new List<Line>();
+            var el = obj as Ellipse;
+            if (el != null)
             {
-                var x = (double)arg2.GetValue(Canvas.LeftProperty);
-                var y = (double)arg2.GetValue(Canvas.TopProperty);
-                List<Line> resLine;
-                if(dicLines.TryGetValue(new Tuple<double, double>(y, x), out resLine))
+                resLine = GetAllLine(el);
+            }
+
+            var pp = obj1 as Popup;
+            if (pp == null) return;
+            var sp = pp.Child as StackPanel;
+            if (sp == null) return;
+            if (sp.Children.Count > 1)
+            {
+                var cb = sp.Children[1] as CheckBox;
+                if (cb == null) return;
+                if (cb.IsChecked ?? false)
                 {
-                    for(int i = 0; i < resLine.Count; ++i)
+                    for (int i = 0; i < resLine.Count; ++i)
                     {
-                        resLine[i].Stroke = arg1 ? (Brush)bc.ConvertFrom("#FF0033") : Brushes.Black;
-                        resLine[i].StrokeThickness = arg1 ? 3 : 1;
+                        //resLine[i].Stroke = arg1 ? (Brush)bc.ConvertFrom("#FF0033") : Brushes.Black;
+                        resLine[i].StrokeThickness = 1;
+
                     }
                 }
-            });
+                else
+                {
+                    for (int i = 0; i < resLine.Count; ++i)
+                    {
+                        //resLine[i].Stroke = arg1 ? (Brush)bc.ConvertFrom("#FF0033") : Brushes.Black;
+                        resLine[i].StrokeThickness = 0;
+                    }
+                }
+            }
+        }
+
+        private List<Line> GetAllLine(Ellipse el)
+        {
+            var x = (double)el.GetValue(Canvas.LeftProperty);
+            var y = (double)el.GetValue(Canvas.TopProperty);
+            List<Line> resLine;
+            if (!dicLines.TryGetValue(new Tuple<double, double>(y, x), out resLine))
+                resLine = new List<Line>();
+            return resLine;
+        }
+
+        private BrushConverter bc = new BrushConverter();
+        private async void ActionLine(bool arg1, Ellipse arg2)
+        {
+            Popup pp = null;
+            bool isRefresh = true;
+            for (int i = 0; i < matrixs.Row;  ++i)
+                for (int j = 0; j < matrixs.Column; ++j)
+                {
+                    ViewNode node = matrixs[i, j];
+                    if (node.Ellipse == arg2)
+                    {
+                       await MainWindow.main.Dispatcher.BeginInvoke((ThreadStart)delegate ()
+                        {
+                            pp = node.codePopup;
+                            var sp = (StackPanel)pp.Child;
+                            var cb = (CheckBox)sp.Children[1];
+                            isRefresh = cb.IsChecked ?? false;
+                        });
+                    }
+                }
+
+            if (isRefresh)
+               await MainWindow.main.Dispatcher.BeginInvoke((ThreadStart)delegate ()
+                {
+                    var x = (double)arg2.GetValue(Canvas.LeftProperty);
+                    var y = (double)arg2.GetValue(Canvas.TopProperty);
+                    List<Line> resLine;
+                    if (dicLines.TryGetValue(new Tuple<double, double>(y, x), out resLine))
+                    {
+                        for (int i = 0; i < resLine.Count; ++i)
+                        {
+                            resLine[i].Stroke = arg1 ? (Brush)bc.ConvertFrom("#FF0033") : Brushes.Black;
+                            resLine[i].StrokeThickness = arg1 ? 3 : 1;
+
+                        }
+                    }
+                });
         }
         //List<Line> allLines = new List<Line>();
         Dictionary<Tuple<double, double>, List<Line>> dicLines =
@@ -138,7 +207,8 @@ namespace Perceptron.Model
                             if (dicLines.TryGetValue(temp, out resList))
                             {
                                 resList.Add(line);
-                            }else
+                            }
+                            else
                             {
                                 resList = new List<Line>();
                                 resList.Add(line);

@@ -33,8 +33,8 @@ namespace PerceptronLib.Nodes
         public double StrokeThickness = 0.5;
         public Brush Fill = Brushes.Transparent;
         private BrushConverter bc = new BrushConverter();
-        private Popup codePopup = null;
-        public Action<UIElement> Action;
+        public Popup codePopup = null;
+        public Action<UIElement, UIElement> Action;
         public Ellipse Ellipse = null;
         public Ellipse GetEllipse(string str, double radius)
         {
@@ -97,11 +97,11 @@ namespace PerceptronLib.Nodes
             isFocuse = !isFocuse;
             if(isFocuse)
             {
-                ellipse.Fill = (Brush)bc.ConvertFrom("#ABEBC6");
+                ellipse.Fill = (Brush)bc.ConvertFrom("#ff0000");
             }
             else
             {
-                ellipse.Fill = (Brush)bc.ConvertFrom("#E5E7E9");
+                ellipse.Fill = (Brush)bc.ConvertFrom("#00ffbf");
             }
 
             ActionLine?.BeginInvoke(isFocuse, ellipse, callBack, ellipse);
@@ -118,7 +118,7 @@ namespace PerceptronLib.Nodes
         {
             CheckBox el = (CheckBox)sender;
             StackPanel sp = (StackPanel)el.Parent;
-            Action?.Invoke(((Popup)sp.Parent).PlacementTarget);
+            Action?.Invoke(((Popup)sp.Parent).PlacementTarget, (Popup)sp.Parent);
 
         }
 

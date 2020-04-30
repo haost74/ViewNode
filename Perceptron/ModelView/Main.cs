@@ -10,7 +10,7 @@ namespace Perceptron.ModelView
     public class Main : INotifyPropertyChanged
     {
 
-        private int row = 3;
+        private int row = 5;
         public int Row
         {
             get { return row; }
@@ -22,7 +22,7 @@ namespace Perceptron.ModelView
             }
         }
 
-        private int column = 2;
+        private int column = 8;
         public int Column
         {
             get { return column; }

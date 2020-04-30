@@ -75,7 +75,7 @@ namespace Perceptron.Utility
             cb.Click += Cb_Checked;
 
             sp.Children.Add(cb);
-            sp.Background = (Brush)bc.ConvertFrom("#E5E7E9");
+            sp.Background = Config.Cfg.Colors.ColorEllipse;//(Brush)bc.ConvertFrom("#E5E7E9");
             codePopup.Child = sp;
             
             codePopup.Placement = PlacementMode.MousePoint;

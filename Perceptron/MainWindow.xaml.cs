@@ -49,6 +49,8 @@ namespace Perceptron
                 ma.StartRec();
             }
 
+            Button_Click(null, null);
+
         }
 
         private async Task Init()
@@ -77,76 +79,6 @@ namespace Perceptron
             int row = GetDataContext.Row;
             int column = GetDataContext.Column;
             Init init = new Init(row, column, height, wigth, mainCanvas);
-            return;
-            MapLine ml = new MapLine();
-
-            var _x = 2 * GetDataContext.Column + 1;
-            var _y = 2 * GetDataContext.Row + 1;
-            double x = Math.Round((wigth - 300) / _x);
-            double y = Math.Round((height - 300) / (_y));
-            ml.radius = x <= y ? x / 2 : y / 2;
-            ml.map = new Tuple<double, double>[GetDataContext.Row, GetDataContext.Column];
-            int numRow = -1;
-            int numColumn = 0;
-            List<Tuple<double, double>> maps = new List<Tuple<double, double>>();
-            bool isbool = true;
-            for (int i = 0; i < _y; ++i)
-            {
-                if (i % 2 > 0)
-                {
-                    numRow++;
-                    numColumn = 0;
-                }
-                for (int j = 0; j < _x; ++j)
-                {
-                    if (i % 2 > 0 && j % 2 > 0)
-                    {
-                        try
-                        {
-                            GenerateCircle circle = new GenerateCircle(x <= y ? x : y);
-                            //var el = circle.GetEllipse(numRow, numColumn++);
-                            var el = circle.GetEllipse($"X = {x * j} Y = {y * i}");
-
-                            circle.Action += Checed;
-                            el.SetValue(Canvas.LeftProperty, x * j);
-                            el.SetValue(Canvas.TopProperty, y * i);
-                            mainCanvas.Children.Add(el);
-                            int ex = numRow;
-                            int ey = numColumn;
-                            ml.map[ex, ey] = new Tuple<double, double>(x * j + ml.radius, y * i + ml.radius);
-                            maps.Add(new Tuple<double, double>(x * j + ml.radius, y * i + ml.radius));
-                            numColumn++;
-
-                        }
-                        catch (Exception ex)
-                        {
-                            var s = numRow;
-                            var h = numColumn;
-                        }
-
-                    }
-                }
-
-            }
-
-            var temp = maps.GroupBy((z) => z.Item1).ToList();
-
-            List<Tuple<double, double>> res = null;
-            foreach (var group in temp)
-            {
-                if (res != null)
-                {
-                    var temps = group.ToList();
-                    foreach (var root in temps)
-                        foreach (var dop in res)
-                        {
-                            GenerateLine gl = new GenerateLine();
-                            gl.newLine(root.Item1, root.Item2, dop.Item1, dop.Item2, Brushes.Black, mainCanvas);
-                        }
-
-                }
-                res = group.ToList();
-            }
         }
 
         private void Checed(UIElement el)
