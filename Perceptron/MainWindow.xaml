@@ -10,6 +10,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Orientation="Horizontal">
             <Label Content="Row"/>
@@ -19,6 +20,7 @@
             <TextBox Height="20" Width="60" VerticalContentAlignment="Center"
                      HorizontalContentAlignment="Left" Padding="5 0 0 0" Text="{Binding Column, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
             <Button Content="Refresh" Height="20" Width="76" Margin="20 0 0 0" Click="Button_Click"/>
+            <Button Content="Run" Height="20" Width="76" Margin="30 0 0 0" Click="Button_Click_Run"/>
         </StackPanel>
         <Canvas Grid.Row="1" Margin="10" x:Name="mainCanvas" ClipToBounds="True" 
                 Background="#FFFDE7" PreviewMouseLeftButtonDown="mainCanvas_MouseLeftButtonDown">

@@ -16,3 +16,6 @@ D:\Tensor\ViewNode\PerceptronLib\obj\Debug\PerceptronLib.csproj.GenerateResource
 D:\Tensor\ViewNode\PerceptronLib\obj\Debug\PerceptronLib.csproj.CoreCompileInputs.cache
 D:\Tensor\ViewNode\PerceptronLib\obj\Debug\PerceptronLib.dll
 D:\Tensor\ViewNode\PerceptronLib\obj\Debug\PerceptronLib.pdb
+D:\Tensor\ViewNode\PerceptronLib\bin\Debug\System.Private.DataContractSerialization.dll
+D:\Tensor\ViewNode\PerceptronLib\bin\Debug\System.Reflection.TypeExtensions.dll
+D:\Tensor\ViewNode\PerceptronLib\obj\Debug\PerceptronLib.csproj.CopyComplete

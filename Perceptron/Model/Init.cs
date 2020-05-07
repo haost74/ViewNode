@@ -68,7 +68,7 @@ namespace Perceptron.Model
             allStepWigth = Algo((_x) => { return 2 * _x + 1; }, row);
             allStepHeight = Algo((_x) => { return 2 * _x + 1; }, column);
             actionFieldW = Algo(_x => { return Math.Round((_x - 300) / allStepWigth); }, height);
-            actionFieldH = Algo(_x => { return Math.Round((_x - 300) / allStepHeight); }, width);
+            actionFieldH = Algo(_x => { return Math.Round((_x - 150) / allStepHeight); }, width);
 
             radius = actionFieldW < actionFieldH ? actionFieldW : actionFieldH;
             //matrixs = new PerceptronLib.Utility.Matrix<PerceptronLib.Nodes.ViewNode>(row, column);
@@ -91,9 +91,6 @@ namespace Perceptron.Model
                     ViewNode.Coordinates.Add(new Tuple<double, double>(node.XMap, node.YMap));
                     AddCanvas(el, node.XMap, node.YMap);
                     matrixs[i, j] = node;
-
-
-
                 }
             }
 

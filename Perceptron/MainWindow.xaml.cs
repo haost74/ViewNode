@@ -1,18 +1,14 @@
 ﻿using Audio;
 using Perceptron.Model;
 using Perceptron.ModelView;
-using Perceptron.Utility;
 using PerceptronLib.Nodes;
+using Psql;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Interop;
-using System.Windows.Media;
 using System.Windows.Shapes;
 
 namespace Perceptron
@@ -23,10 +19,13 @@ namespace Perceptron
     public partial class MainWindow : Window
     {
         MainAudio ma = null;//new MainAudio();
+        Init init = null;
         public static MainWindow main = null;
+        RequirePsql  req = new RequirePsql();
         public MainWindow()
         {
             main = this;
+            req.Error += Error;
             InitializeComponent();
             DataContext = new Main();
             Loaded += MainWindow_Loaded;
@@ -34,10 +33,17 @@ namespace Perceptron
 
         }
 
+        private void Error(string obj)
+        {
+            
+        }
+
         private void MainWindow_Closed(object sender, EventArgs e)
         {
             if (ma != null)
                 ma.StopRec();
+
+            
         }
 
         int[,] input = new int[,] { { 1, 0 }, { 1, 1 }, { 0, 1 }, { 0, 0 } };
@@ -50,7 +56,8 @@ namespace Perceptron
             }
 
             Button_Click(null, null);
-
+            var res = req.GetArray<Binance>(new Binance(), "select * from binance limit 100");
+            var t = Convert.ToDateTime(res[0].datetime); 
         }
 
         private async Task Init()
@@ -78,7 +85,7 @@ namespace Perceptron
             PerceptronLib.Perceptron perceptron = null;
             int row = GetDataContext.Row;
             int column = GetDataContext.Column;
-            Init init = new Init(row, column, height, wigth, mainCanvas);
+            init = new Init(row, column, height, wigth, mainCanvas);
         }
 
         private void Checed(UIElement el)
@@ -92,6 +99,13 @@ namespace Perceptron
             {
                 ViewNode.sPopup.IsOpen = false;
             }
+        }
+
+        private void Button_Click_Run(object sender, RoutedEventArgs e)
+        {
+            if (init == null) return;
+
+            FrameRun run = new FrameRun(init, null);
         }
     }
 

@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Perceptron", "Perceptron\Perceptron.csproj", "{B398AB86-3FD6-489E-A8D3-92F66DFEE151}"
 	ProjectSection(ProjectDependencies) = postProject
 		{2725ED6F-A64A-46F2-A640-BC9C2400F0C6} = {2725ED6F-A64A-46F2-A640-BC9C2400F0C6}
+		{088AC2D0-9509-4E3E-9BBD-BD160EED2119} = {088AC2D0-9509-4E3E-9BBD-BD160EED2119}
 		{DC5699FD-C699-4A5A-84FA-77D2BCD02042} = {DC5699FD-C699-4A5A-84FA-77D2BCD02042}
 	EndProjectSection
 EndProject
@@ -14,6 +15,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{1CCA9746-6EEF-4BF1-9433-020CD35DF784}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Audio", "Audio\Audio.csproj", "{DC5699FD-C699-4A5A-84FA-77D2BCD02042}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Psql", "Psql\Psql.csproj", "{088AC2D0-9509-4E3E-9BBD-BD160EED2119}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,6 +40,10 @@ Global
 		{DC5699FD-C699-4A5A-84FA-77D2BCD02042}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC5699FD-C699-4A5A-84FA-77D2BCD02042}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DC5699FD-C699-4A5A-84FA-77D2BCD02042}.Release|Any CPU.Build.0 = Release|Any CPU
+		{088AC2D0-9509-4E3E-9BBD-BD160EED2119}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{088AC2D0-9509-4E3E-9BBD-BD160EED2119}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{088AC2D0-9509-4E3E-9BBD-BD160EED2119}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{088AC2D0-9509-4E3E-9BBD-BD160EED2119}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
