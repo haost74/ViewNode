@@ -4,6 +4,7 @@ using Perceptron.ModelView;
 using PerceptronLib.Nodes;
 using Psql;
 using System;
+using System.CodeDom;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
@@ -56,8 +57,28 @@ namespace Perceptron
             }
 
             Button_Click(null, null);
-            var res = req.GetArray<Binance>(new Binance(), "select * from binance limit 100");
-            var t = Convert.ToDateTime(res[0].datetime); 
+
+            JobJeson jobJeson = new JobJeson();
+            var v = new { EmployeeID = 108, EmployeeName = "John Doe" };
+            
+            //jobJeson.SaveJeson("test.jeson", v)
+            //    .ContinueWith(res => 
+            //    {
+            //        if(res.Result)
+            //        {
+
+            //        }
+            //    });
+            var ty = v.GetType();
+            var name = v.GetType();
+            
+            jobJeson.ReaderJeson<object>("test.jeson", v)
+                .ContinueWith(res => {
+                    var r = res.Result;
+                    
+                });
+            //var res = req.GetArray<Binance>(new Binance(), "select * from binance limit 100");
+            //var t = Convert.ToDateTime(res[0].datetime); 
         }
 
         private async Task Init()
