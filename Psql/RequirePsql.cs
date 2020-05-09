@@ -8,6 +8,11 @@ namespace Psql
         public string PathConnect { get; set; } = "";
         public Action<string> Error = null;
 
+        public RequirePsql()
+        {
+            CreatePath.GetPath();
+        }
+
         public bool Connect(string sql)
         {
             bool isRes = false;

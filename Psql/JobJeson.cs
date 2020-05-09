@@ -32,7 +32,7 @@ Console.WriteLine($"Name: {restoredPerson.Name}  Age: {restoredPerson.Age}");
                     return await JsonSerializer.DeserializeAsync<T>(fs);
                 }
             }
-            catch 
+            catch (System.Exception ex)
             {
                 return null;
             }
