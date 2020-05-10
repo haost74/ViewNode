@@ -1,5 +1,6 @@
 ﻿using Npgsql;
 using System;
+using System.Threading.Tasks;
 
 namespace Psql
 {
@@ -7,11 +8,6 @@ namespace Psql
     {
         public string PathConnect { get; set; } = "";
         public Action<string> Error = null;
-
-        public RequirePsql()
-        {
-            CreatePath.GetPath();
-        }
 
         public bool Connect(string sql)
         {
@@ -47,9 +43,69 @@ namespace Psql
         /// <param name="sql">запрос к db</param>
         /// <returns>массив значений T</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Security", "CA2100:Review SQL queries for security vulnerabilities", Justification = "<Ожидание>")]
-        public virtual T[] GetArray<T>(T obj, string sql) where T : class
+        public virtual async Task<T[]> GetArray<T>(T obj, string sql) where T : class
         {
+            T[] res = new T[0];
+            await CreatePath.GetPath()
+                .ContinueWith(path =>
+                {
+                    System.Data.DataTable dt = new System.Data.DataTable();
+                    try
+                    {
+                        using (NpgsqlConnection connection = new NpgsqlConnection(path.Result))
+                        {
+                            connection.Open();
+                            if (connection.State == System.Data.ConnectionState.Open)
+                                using (NpgsqlCommand cmd = new NpgsqlCommand(sql, connection))
+                                {
+                                    try
+                                    {
+                                        using (NpgsqlDataAdapter da = new NpgsqlDataAdapter(cmd))
+                                        {
+                                            da.Fill(dt);
+                                            res = new T[dt.Rows.Count];
+                                            try
+                                            {
+                                                for (int i = 0; i < dt.Rows.Count; ++i)
+                                                {
+                                                    T instance = (T)Activator.CreateInstance(typeof(T));
 
+                                                    for (int k = 0; k < dt.Rows[i].ItemArray.Length; ++k)
+                                                    {
+                                                        if (dt.Rows[i].ItemArray[k] != System.DBNull.Value && typeof(T).GetProperty(dt.Columns[k].ColumnName) != null)
+                                                            typeof(T).GetProperty(dt.Columns[k].ColumnName).SetValue(instance, dt.Rows[i].ItemArray[k]);
+
+                                                    }
+
+                                                    res[i] = instance;
+                                                }
+                                            }
+                                            catch (Exception ex)
+                                            {
+                                                Error?.BeginInvoke(ex.ToString(), null, null);
+                                                Console.WriteLine(ex.ToString());
+                                            }
+                                        }
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Error?.BeginInvoke(ex.ToString(), null, null);
+                                    }
+                                }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Error?.BeginInvoke(ex.ToString(), null, null);
+                    }
+                });
+
+            return res;
+        }
+        #endregion
+
+        private void Require<T>(T obj, string sql)
+        {
             T[] res = new T[0];
             System.Data.DataTable dt = new System.Data.DataTable();
             try
@@ -100,10 +156,7 @@ namespace Psql
             {
                 Error?.BeginInvoke(ex.ToString(), null, null);
             }
-
-            return res;
         }
-        #endregion
 
     }
 }

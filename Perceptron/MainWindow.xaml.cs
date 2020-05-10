@@ -4,11 +4,12 @@ using Perceptron.ModelView;
 using PerceptronLib.Nodes;
 using Psql;
 using System;
-using System.CodeDom;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls.Primitives;
+using System.Windows.Documents;
 using System.Windows.Interop;
 using System.Windows.Shapes;
 
@@ -22,7 +23,7 @@ namespace Perceptron
         MainAudio ma = null;//new MainAudio();
         Init init = null;
         public static MainWindow main = null;
-        RequirePsql  req = new RequirePsql();
+        RequirePsql req = new RequirePsql();
         public MainWindow()
         {
             main = this;
@@ -36,7 +37,7 @@ namespace Perceptron
 
         private void Error(string obj)
         {
-            
+
         }
 
         private void MainWindow_Closed(object sender, EventArgs e)
@@ -44,7 +45,7 @@ namespace Perceptron
             if (ma != null)
                 ma.StopRec();
 
-            
+
         }
 
         int[,] input = new int[,] { { 1, 0 }, { 1, 1 }, { 0, 1 }, { 0, 0 } };
@@ -58,11 +59,39 @@ namespace Perceptron
 
             Button_Click(null, null);
 
-           
+            /*
+             select * from binance where datetime = '03-04-2020 22:44:143'and bidask = true order by param desc limit 5 
+             select * from binance where datetime = '03-04-2020 22:44:143'and bidask = false order by param  limit 5;
 
 
-            //var res = req.GetArray<Binance>(new Binance(), "select * from binance limit 100");
+            select * from binance where datetime = '03-04-2020 22:44:143' and bidask = true order by param  desc limit 5;
+            select * from binance where datetime = '03-04-2020 22:44:143' and bidask = false order by param limit 5;
+
+            select datetime, count(id) from binance group by datetime;
+            select datetime from binance group by datetime;
+
+
+
+
+
+             */
+
+            string sql = "select * from binance where datetime = '03-04-2020 22:44:143' and bidask = true order by param  desc limit 5";
+            string sql1 = "select * from binance where datetime = '03-04-2020 22:44:143' and bidask = false order by param limit 5;";
+            List<Binance> resList = new List<Binance>();
+
+            //var res = req.GetArray(new Binance(), "select min(param) from binance where datetime = '03-04-2020 22:44:143'and bidask = false order by param DESC;");
+            var res = req.GetArray(new Binance(), sql);
             //var t = Convert.ToDateTime(res[0].datetime);
+            res.ContinueWith(sqlRes =>
+            {
+                req.GetArray(new Binance(), sql1)
+                .ContinueWith(res1 => 
+                {
+                    resList = new List<Binance>(sqlRes.Result);
+                    resList.AddRange(res1.Result);
+                });
+            });
         }
 
         private async Task Init()

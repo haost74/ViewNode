@@ -8,14 +8,18 @@ namespace Psql
         public static string Path { get; private set; } = "";
         public static async Task<string> GetPath(string file = "connectParameters.json")
         {
-            if (!File.Exists(file))
-                await Create(file);
-            await new JobJeson().ReaderJeson<Parameters>(file, new Parameters())
-                              .ContinueWith(_res =>
-                              {
-                                  var r = _res.Result;
+            if (string.IsNullOrEmpty(Path))
+            {
+                if (!File.Exists(file))
+                    await Create(file);
+                await new JobJeson().ReaderJeson<Parameters>(file, new Parameters())
+                                  .ContinueWith(_res =>
+                                  {
+                                      var param = _res.Result;
 
-                              });
+                                      Path = $"Server={param.server}; Port={param.port}; User Id={param.user}; Password={param.password}; Database={param.database}";
+                                  });
+            }
 
             return Path;
         }
