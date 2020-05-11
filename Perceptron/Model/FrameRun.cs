@@ -1,17 +1,21 @@
 ﻿using PerceptronLib.Nodes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Perceptron.Model
 {
     public class FrameRun
     {
-        public FrameRun(Init init, ViewNode[] viewNodes)
+        public FrameRun(Init init)
         {
-            if (init == null) return;
+
+            if (init.matrixs != null && init.matrixs.Row > 0 && init.matrixs.Column > 0 && init.ResList.Count == init.matrixs.Row)
+            {
+                for (int i = 0; i < init.matrixs.Row; ++i)
+                {
+                    ViewNode el = init.matrixs[i, 0];
+                    el.Value = (double)init.ResList[i].param;
+                }
+            }
+
         }
     }
 }

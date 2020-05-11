@@ -2,14 +2,15 @@
 using Perceptron.Model;
 using Perceptron.ModelView;
 using PerceptronLib.Nodes;
+using PerceptronLib.Utility;
 using Psql;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls.Primitives;
-using System.Windows.Documents;
 using System.Windows.Interop;
 using System.Windows.Shapes;
 
@@ -24,6 +25,7 @@ namespace Perceptron
         Init init = null;
         public static MainWindow main = null;
         RequirePsql req = new RequirePsql();
+        List<Binance> resList = new List<Binance>();
         public MainWindow()
         {
             main = this;
@@ -57,28 +59,11 @@ namespace Perceptron
                 ma.StartRec();
             }
 
-            Button_Click(null, null);
-
-            /*
-             select * from binance where datetime = '03-04-2020 22:44:143'and bidask = true order by param desc limit 5 
-             select * from binance where datetime = '03-04-2020 22:44:143'and bidask = false order by param  limit 5;
-
-
-            select * from binance where datetime = '03-04-2020 22:44:143' and bidask = true order by param  desc limit 5;
-            select * from binance where datetime = '03-04-2020 22:44:143' and bidask = false order by param limit 5;
-
-            select datetime, count(id) from binance group by datetime;
-            select datetime from binance group by datetime;
-
-
-
-
-
-             */
+            //Button_Click(null, null);
 
             string sql = "select * from binance where datetime = '03-04-2020 22:44:143' and bidask = true order by param  desc limit 5";
             string sql1 = "select * from binance where datetime = '03-04-2020 22:44:143' and bidask = false order by param limit 5;";
-            List<Binance> resList = new List<Binance>();
+
 
             //var res = req.GetArray(new Binance(), "select min(param) from binance where datetime = '03-04-2020 22:44:143'and bidask = false order by param DESC;");
             var res = req.GetArray(new Binance(), sql);
@@ -86,10 +71,14 @@ namespace Perceptron
             res.ContinueWith(sqlRes =>
             {
                 req.GetArray(new Binance(), sql1)
-                .ContinueWith(res1 => 
+                .ContinueWith(res1 =>
                 {
                     resList = new List<Binance>(sqlRes.Result);
                     resList.AddRange(res1.Result);
+                    Dispatcher.BeginInvoke((ThreadStart)delegate ()
+                    {
+                        RefreshView(resList.Count);
+                    });
                 });
             });
         }
@@ -110,16 +99,23 @@ namespace Perceptron
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            RefreshView();
+        }
+
+        private void RefreshView(int row = 0, int column = 0)
+        {
             mainCanvas.Children.Clear();
             mainCanvas_MouseLeftButtonDown(null, null);
 
             double height = mainCanvas.ActualHeight;
             double wigth = mainCanvas.ActualWidth;
 
-            PerceptronLib.Perceptron perceptron = null;
-            int row = GetDataContext.Row;
-            int column = GetDataContext.Column;
+            row = row == 0 ? GetDataContext.Row : row;
+            column = column == 0 ? GetDataContext.Column : column;
+            GetDataContext.Row = row;
+            GetDataContext.Column = column;
             init = new Init(row, column, height, wigth, mainCanvas);
+            init.ResList = resList;
         }
 
         private void Checed(UIElement el)
@@ -137,9 +133,9 @@ namespace Perceptron
 
         private void Button_Click_Run(object sender, RoutedEventArgs e)
         {
-            if (init == null) return;
-
-            FrameRun run = new FrameRun(init, null);
+            if (init == null || resList.Count == 0) return;
+            
+            FrameRun run = new FrameRun(init);
         }
     }
 

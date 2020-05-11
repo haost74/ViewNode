@@ -15,7 +15,7 @@ namespace Perceptron.Model
 {
     public class Init
     {
-        PerceptronLib.Utility.Matrix<PerceptronLib.Nodes.ViewNode> matrixs = null;
+        public PerceptronLib.Utility.Matrix<PerceptronLib.Nodes.ViewNode> matrixs = null;
         /// <summary>
         /// ширина Cnvas
         /// </summary>
@@ -36,6 +36,15 @@ namespace Perceptron.Model
         private double radius = 0;
         private Canvas mainCanvas = null;
         private delegate void DisplayHandler();
+        private List<Binance> resList = new List<Binance>();
+        public List<Binance> ResList
+        {
+            get { return resList; }
+            set
+            {
+                resList = value;                
+            }
+        }
 
         /// <summary>
         /// создание матрицы 
@@ -93,6 +102,8 @@ namespace Perceptron.Model
                     matrixs[i, j] = node;
                 }
             }
+
+            matrixs.CreateIdentityMatrixInit(row, column);
 
             dh.BeginInvoke(null, null);
         }

@@ -50,6 +50,24 @@ namespace PerceptronLib.Utility
             return result;
         }
 
+        public void CreateIdentityMatrixInit(int row, int column)
+        {
+            var result = this;
+            var pm = new ParamMin();
+            pm.min = -0.5;
+            pm.max = 0.5;
+            pm.rn = new Random();
+            for (int i = 0; i < row; ++i)
+                for (int j = 0; j < column; ++j)
+                {
+                    result[i, j] = new T();
+                    result[i, j].Weight = pm.ran();
+
+                    if (j != 0)
+                        result[i, j - 1].SignalTransmission += result[i, j].Signal;
+                }
+        }
+
         public Matrix(int row, int column)
         {
             this.row = row;
